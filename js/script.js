@@ -11,7 +11,7 @@ const mapStatus = document.querySelector("#map-status");
 const cartItems = document.querySelector("#cart-items");
 const cartCount = document.querySelector("#cart-count");
 const cartTotal = document.querySelector("#cart-total");
-const CART_STORAGE_KEY = "orbitCinemaCart";
+const CART_STORAGE_KEY = "seatlyCart";
 
 const appState = {
   inspectedSeatId: null,

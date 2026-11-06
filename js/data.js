@@ -1,6 +1,6 @@
 // The venue is described once here. script.js uses this data to create every seat.
 const venueData = {
-  name: "Orbit Grand Hall",
+  name: "Seatly Hall One",
   currency: "AZN",
   sections: [
     {
