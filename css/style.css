@@ -188,6 +188,20 @@ h1, h2, .brand { font-family: "Space Grotesk", sans-serif; }
 }
 .seat::after { content: ""; position: absolute; inset: auto 5px -3px; height: 4px; border-radius: 2px; background: inherit; opacity: 0.75; }
 .seat:hover:not(:disabled) { transform: translateY(-3px); background: #34405a; color: white; }
+.seat.is-inspected {
+  z-index: 1;
+  border-color: var(--cyan);
+  background: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(98, 216, 255, 0.14), 0 0 18px rgba(98, 216, 255, 0.5);
+  color: #08101a;
+  transform: translateY(-2px);
+}
+.seat.is-in-cart {
+  border-color: #bd8cff;
+  background: linear-gradient(145deg, var(--purple), #7958ff);
+  box-shadow: 0 0 14px rgba(166, 108, 255, 0.38);
+  color: white;
+}
 .seat-section--vip .seat { border-color: rgba(166, 108, 255, 0.23); }
 .seat-section--premium .seat { border-color: rgba(93, 140, 255, 0.22); }
 .seat-section--economy .seat { background: #202737; }

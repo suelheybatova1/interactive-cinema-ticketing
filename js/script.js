@@ -70,4 +70,31 @@ function renderSeatMap() {
   availableCount.textContent = venueData.seats.filter((seat) => !seat.unavailable).length;
 }
 
+function updateSeatStates() {
+  document.querySelectorAll(".seat").forEach((button) => {
+    const seatId = button.dataset.seatId;
+    const isInspected = seatId === appState.inspectedSeatId;
+    const isInCart = appState.cart.some((item) => item.id === seatId);
+
+    button.classList.toggle("is-inspected", isInspected && !isInCart);
+    button.classList.toggle("is-in-cart", isInCart);
+    button.setAttribute("aria-pressed", String(isInspected || isInCart));
+  });
+}
+
+function inspectSeat(seatId) {
+  const seat = getSeatById(seatId);
+  if (!seat || seat.unavailable) return;
+
+  appState.inspectedSeatId = seatId;
+  updateSeatStates();
+}
+
+seatLayout.addEventListener("click", (event) => {
+  const seatButton = event.target.closest(".seat");
+  if (!seatButton) return;
+
+  inspectSeat(seatButton.dataset.seatId);
+});
+
 renderSeatMap();
