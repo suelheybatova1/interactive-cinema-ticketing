@@ -1,5 +1,9 @@
 const seatLayout = document.querySelector("#seat-layout");
 const availableCount = document.querySelector("#available-count");
+const seatInfo = document.querySelector("#seat-info");
+const seatInfoTitle = document.querySelector("#seat-info-title");
+const addToCartButton = document.querySelector("#add-to-cart");
+const seatMessage = document.querySelector("#seat-message");
 
 const appState = {
   inspectedSeatId: null,
@@ -88,6 +92,41 @@ function inspectSeat(seatId) {
 
   appState.inspectedSeatId = seatId;
   updateSeatStates();
+  renderSeatInfo();
+}
+
+function renderSeatInfo() {
+  const seat = getSeatById(appState.inspectedSeatId);
+
+  if (!seat) {
+    seatInfoTitle.textContent = "Select a seat";
+    seatInfo.className = "seat-info empty";
+    seatInfo.innerHTML = `
+      <div class="empty-icon" aria-hidden="true">⌁</div>
+      <p>Choose an available seat on the map to see its section and price.</p>
+    `;
+    addToCartButton.disabled = true;
+    return;
+  }
+
+  const isInCart = appState.cart.some((item) => item.id === seat.id);
+  seatInfoTitle.textContent = `Seat ${seat.id}`;
+  seatInfo.className = "seat-info";
+  seatInfo.innerHTML = `
+    <div class="seat-detail-main">
+      <span class="zone-chip zone-chip--${seat.sectionId}">${seat.sectionName}</span>
+      <strong>${seat.price} <small>${venueData.currency}</small></strong>
+    </div>
+    <dl class="seat-facts">
+      <div><dt>Row</dt><dd>${seat.row}</dd></div>
+      <div><dt>Number</dt><dd>${seat.number}</dd></div>
+      <div><dt>Status</dt><dd>${isInCart ? "In cart" : "Available"}</dd></div>
+    </dl>
+    <p>${seat.description}</p>
+  `;
+  addToCartButton.disabled = isInCart;
+  addToCartButton.textContent = isInCart ? "Already in cart" : "Add to cart";
+  seatMessage.textContent = "";
 }
 
 seatLayout.addEventListener("click", (event) => {

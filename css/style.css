@@ -220,6 +220,19 @@ h1, h2, .brand { font-family: "Space Grotesk", sans-serif; }
 .seat-info.empty { display: grid; place-items: center; align-content: center; text-align: center; color: var(--muted); font-size: 0.82rem; }
 .empty-icon { margin-bottom: 8px; color: var(--blue); font-size: 2rem; }
 .seat-info p { margin-bottom: 0; }
+.seat-detail-main { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.seat-detail-main > strong { font-family: "Space Grotesk", sans-serif; font-size: 1.45rem; }
+.seat-detail-main small { color: var(--muted); font-size: 0.64rem; }
+.zone-chip { padding: 5px 9px; border: 1px solid rgba(255,255,255,0.12); border-radius: 999px; color: var(--cyan); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.zone-chip--vip { color: #c99dff; background: rgba(166, 108, 255, 0.11); }
+.zone-chip--premium { color: #86aaff; background: rgba(93, 140, 255, 0.11); }
+.zone-chip--standard { color: #79ddff; background: rgba(98, 216, 255, 0.09); }
+.zone-chip--economy { color: #b1b8c8; background: rgba(177, 184, 200, 0.08); }
+.seat-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 18px 0 14px; }
+.seat-facts div { padding: 9px; border-radius: 9px; background: rgba(255,255,255,0.035); }
+.seat-facts dt { color: var(--muted); font-size: 0.58rem; text-transform: uppercase; }
+.seat-facts dd { margin: 2px 0 0; font-weight: 700; font-size: 0.78rem; }
+.seat-info > p { color: var(--muted); font-size: 0.72rem; line-height: 1.45; }
 .primary-button {
   width: 100%;
   min-height: 48px;
