@@ -10,6 +10,7 @@ const zoomLevel = document.querySelector("#zoom-level");
 const cartItems = document.querySelector("#cart-items");
 const cartCount = document.querySelector("#cart-count");
 const cartTotal = document.querySelector("#cart-total");
+const CART_STORAGE_KEY = "orbitCinemaCart";
 
 const appState = {
   inspectedSeatId: null,
@@ -206,18 +207,49 @@ function renderCart() {
   renderSeatInfo();
 }
 
+function saveCart() {
+  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(appState.cart));
+}
+
+function restoreCart() {
+  try {
+    const savedCart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY)) || [];
+    const uniqueSeatIds = new Set();
+
+    appState.cart = savedCart.reduce((validItems, item) => {
+      const seat = getSeatById(item.id);
+      if (!seat || seat.unavailable || uniqueSeatIds.has(seat.id)) return validItems;
+
+      uniqueSeatIds.add(seat.id);
+      validItems.push({ id: seat.id, price: seat.price });
+      return validItems;
+    }, []);
+  } catch (error) {
+    appState.cart = [];
+    localStorage.removeItem(CART_STORAGE_KEY);
+  }
+}
+
 function addInspectedSeatToCart() {
   const seat = getSeatById(appState.inspectedSeatId);
-  if (!seat || seat.unavailable) return;
-  if (appState.cart.some((item) => item.id === seat.id)) return;
+  if (!seat || seat.unavailable) {
+    seatMessage.textContent = "This seat is unavailable and cannot be added.";
+    return;
+  }
+  if (appState.cart.some((item) => item.id === seat.id)) {
+    seatMessage.textContent = `Seat ${seat.id} is already in your cart.`;
+    return;
+  }
 
   appState.cart.push({ id: seat.id, price: seat.price });
+  saveCart();
   seatMessage.textContent = `Seat ${seat.id} added to your cart.`;
   renderCart();
 }
 
 function removeSeatFromCart(seatId) {
   appState.cart = appState.cart.filter((item) => item.id !== seatId);
+  saveCart();
   seatMessage.textContent = `Seat ${seatId} removed from your cart.`;
   renderCart();
 }
@@ -244,4 +276,6 @@ seatLayout.addEventListener("click", (event) => {
 });
 
 renderSeatMap();
+restoreCart();
+renderCart();
 updateMapView();
