@@ -4,6 +4,9 @@ const seatInfo = document.querySelector("#seat-info");
 const seatInfoTitle = document.querySelector("#seat-info-title");
 const addToCartButton = document.querySelector("#add-to-cart");
 const seatMessage = document.querySelector("#seat-message");
+const venueMap = document.querySelector("#venue-map");
+const mapToolbar = document.querySelector(".map-toolbar");
+const zoomLevel = document.querySelector("#zoom-level");
 
 const appState = {
   inspectedSeatId: null,
@@ -129,6 +132,42 @@ function renderSeatInfo() {
   seatMessage.textContent = "";
 }
 
+function clamp(value, minimum, maximum) {
+  return Math.min(Math.max(value, minimum), maximum);
+}
+
+function updateMapView() {
+  const { scale, x, y } = appState.view;
+  venueMap.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+  zoomLevel.value = `${Math.round(scale * 100)}%`;
+  zoomLevel.textContent = zoomLevel.value;
+}
+
+function changeMapView(action) {
+  const view = appState.view;
+  const movementStep = 60;
+
+  const actions = {
+    "zoom-in": () => { view.scale = clamp(view.scale + 0.1, 0.7, 1.5); },
+    "zoom-out": () => { view.scale = clamp(view.scale - 0.1, 0.7, 1.5); },
+    "move-up": () => { view.y = clamp(view.y - movementStep, -260, 260); },
+    "move-down": () => { view.y = clamp(view.y + movementStep, -260, 260); },
+    "move-left": () => { view.x = clamp(view.x - movementStep, -340, 340); },
+    "move-right": () => { view.x = clamp(view.x + movementStep, -340, 340); },
+    "reset-view": () => { appState.view = { scale: 1, x: 0, y: 0 }; }
+  };
+
+  if (!actions[action]) return;
+  actions[action]();
+  updateMapView();
+}
+
+mapToolbar.addEventListener("click", (event) => {
+  const control = event.target.closest("[data-action]");
+  if (!control) return;
+  changeMapView(control.dataset.action);
+});
+
 seatLayout.addEventListener("click", (event) => {
   const seatButton = event.target.closest(".seat");
   if (!seatButton) return;
@@ -137,3 +176,4 @@ seatLayout.addEventListener("click", (event) => {
 });
 
 renderSeatMap();
+updateMapView();
