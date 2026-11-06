@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive cinema seat selection and ticket cart.">
+  <title>Orbit Cinema | Seat Booking</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#main-content" aria-label="Orbit Cinema home">
+      <span class="brand-mark" aria-hidden="true">O</span>
+      <span>ORBIT <strong>CINEMA</strong></span>
+    </a>
+    <div class="show-meta" aria-label="Current screening">
+      <span class="eyebrow">Now booking</span>
+      <strong>Stellar Horizon</strong>
+      <span>6 Nov · 19:30</span>
+    </div>
+  </header>
+
+  <main id="main-content" class="app-shell">
+    <section class="booking-intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Hall 01 · Dolby Atmos</p>
+        <h1 id="page-title">Choose your view</h1>
+        <p>Select a seat to inspect it, then add it to your cart.</p>
+      </div>
+      <div class="show-badge" aria-label="Screening details">
+        <span>THU</span><strong>06 NOV</strong><span>19:30</span>
+      </div>
+    </section>
+
+    <div class="booking-grid">
+      <section class="venue-card" aria-labelledby="venue-title">
+        <div class="venue-heading">
+          <div>
+            <p class="eyebrow">Interactive seating map</p>
+            <h2 id="venue-title">Orbit Grand Hall</h2>
+          </div>
+          <p class="seat-count"><span id="available-count">—</span> seats available</p>
+        </div>
+
+        <div class="map-toolbar" aria-label="Map navigation controls">
+          <div class="tool-group" aria-label="Zoom controls">
+            <button class="tool-button" type="button" data-action="zoom-out" aria-label="Zoom out">−</button>
+            <output id="zoom-level" aria-live="polite">100%</output>
+            <button class="tool-button" type="button" data-action="zoom-in" aria-label="Zoom in">+</button>
+          </div>
+          <div class="tool-group" aria-label="Movement controls">
+            <button class="tool-button" type="button" data-action="move-left" aria-label="Move left">←</button>
+            <button class="tool-button" type="button" data-action="move-up" aria-label="Move up">↑</button>
+            <button class="tool-button" type="button" data-action="move-down" aria-label="Move down">↓</button>
+            <button class="tool-button" type="button" data-action="move-right" aria-label="Move right">→</button>
+          </div>
+          <button class="reset-button" type="button" data-action="reset-view">Center view</button>
+        </div>
+
+        <div class="map-viewport" id="map-viewport" tabindex="0" aria-label="Cinema seating map">
+          <div class="venue-map" id="venue-map">
+            <div class="screen-wrap" aria-hidden="true">
+              <div class="screen"></div>
+              <span>SCREEN</span>
+            </div>
+            <div id="seat-layout" class="seat-layout"></div>
+          </div>
+        </div>
+
+        <div class="legend" aria-label="Seat status legend">
+          <span><i class="legend-dot available"></i>Available</span>
+          <span><i class="legend-dot inspected"></i>Inspected</span>
+          <span><i class="legend-dot in-cart"></i>In cart</span>
+          <span><i class="legend-dot unavailable"></i>Unavailable</span>
+        </div>
+      </section>
+
+      <aside class="booking-sidebar" aria-label="Booking details">
+        <section class="panel seat-panel" aria-labelledby="seat-info-title">
+          <p class="eyebrow">Seat information</p>
+          <h2 id="seat-info-title">Select a seat</h2>
+          <div id="seat-info" class="seat-info empty">
+            <div class="empty-icon" aria-hidden="true">⌁</div>
+            <p>Choose an available seat on the map to see its section and price.</p>
+          </div>
+          <button id="add-to-cart" class="primary-button" type="button" disabled>Add to cart</button>
+          <p id="seat-message" class="inline-message" aria-live="polite"></p>
+        </section>
+
+        <section class="panel cart-panel" aria-labelledby="cart-title">
+          <div class="panel-title-row">
+            <div>
+              <p class="eyebrow">Your order</p>
+              <h2 id="cart-title">Tickets</h2>
+            </div>
+            <span id="cart-count" class="count-badge">0</span>
+          </div>
+          <div id="cart-items" class="cart-items" aria-live="polite">
+            <p class="empty-cart">Your cart is empty.</p>
+          </div>
+          <div class="cart-total">
+            <span>Total</span>
+            <strong id="cart-total">0 AZN</strong>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span>ORBIT CINEMA</span>
+    <span>Interactive student project · 2026</span>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
