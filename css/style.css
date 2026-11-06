@@ -156,7 +156,7 @@ h1, h2, .brand { font-family: "Space Grotesk", sans-serif; }
     #0a0e18;
   background-size: 32px 32px;
 }
-.venue-map { width: 1040px; margin: 0 auto; padding: 44px 36px 54px; transform-origin: center top; transition: transform 240ms ease; }
+.venue-map { width: 1040px; position: relative; left: 50%; margin-left: -520px; padding: 44px 36px 54px; transform-origin: center top; transition: transform 240ms ease; }
 .screen-wrap { width: 72%; margin: 0 auto 46px; text-align: center; color: #6d768c; font-size: 0.62rem; letter-spacing: 0.35em; }
 .screen {
   height: 7px;
@@ -279,10 +279,23 @@ h1, h2, .brand { font-family: "Space Grotesk", sans-serif; }
   .booking-sidebar { grid-template-columns: 1fr; }
   .venue-heading { padding: 20px; }
   .seat-count { display: none; }
-  .map-toolbar { overflow-x: auto; }
+  .map-toolbar { display: grid; grid-template-columns: auto 1fr; overflow-x: auto; }
+  .tool-group:nth-child(2) { grid-column: 1 / -1; grid-row: 2; border-right: 0; padding-right: 0; }
+  .reset-button { grid-column: 2; grid-row: 1; justify-self: end; }
   .map-viewport { min-height: 420px; height: 58vh; }
+  .venue-map { padding-top: 54px; }
+  .screen-wrap { margin-bottom: 38px; }
   .legend { gap: 12px; justify-content: flex-start; }
+  .panel { padding: 20px; }
   .site-footer { flex-direction: column; gap: 8px; }
+}
+
+@media (max-width: 420px) {
+  .booking-intro h1 { font-size: 2.55rem; }
+  .venue-heading h2 { font-size: 1rem; }
+  .map-toolbar { padding-inline: 12px; }
+  .reset-button { padding-inline: 10px; }
+  .legend { font-size: 0.65rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -15,8 +15,16 @@ const CART_STORAGE_KEY = "orbitCinemaCart";
 const appState = {
   inspectedSeatId: null,
   cart: [],
-  view: { scale: 1, x: 0, y: 0 }
+  view: getDefaultView()
 };
+
+function getDefaultView() {
+  return {
+    scale: window.innerWidth < 700 ? 0.72 : 1,
+    x: 0,
+    y: 0
+  };
+}
 
 function getSeatById(seatId) {
   return venueData.seats.find((seat) => seat.id === seatId);
@@ -158,7 +166,7 @@ function changeMapView(action) {
     "move-down": () => { view.y = clamp(view.y + movementStep, -260, 260); },
     "move-left": () => { view.x = clamp(view.x - movementStep, -340, 340); },
     "move-right": () => { view.x = clamp(view.x + movementStep, -340, 340); },
-    "reset-view": () => { appState.view = { scale: 1, x: 0, y: 0 }; }
+    "reset-view": () => { appState.view = getDefaultView(); }
   };
 
   if (!actions[action]) return;
