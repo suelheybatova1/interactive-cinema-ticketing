@@ -253,6 +253,13 @@ h1, h2, .brand { font-family: "Space Grotesk", sans-serif; }
 .count-badge { min-width: 30px; padding: 5px 9px; border-radius: 999px; background: rgba(166, 108, 255, 0.15); color: #c59cff; text-align: center; font-size: 0.75rem; font-weight: 700; }
 .cart-items { display: grid; gap: 8px; margin: 18px 0; max-height: 250px; overflow-y: auto; }
 .empty-cart { padding: 22px 0; margin: 0; color: var(--muted); text-align: center; font-size: 0.8rem; }
+.cart-item { display: grid; grid-template-columns: 34px 1fr 30px; align-items: center; gap: 10px; padding: 10px; border: 1px solid var(--line); border-radius: 11px; background: rgba(255,255,255,0.025); }
+.cart-seat-icon { width: 34px; height: 32px; display: grid; place-items: center; border-radius: 8px 8px 5px 5px; background: rgba(166, 108, 255, 0.17); color: #c79dff; font-size: 0.7rem; font-weight: 700; }
+.cart-item-copy { min-width: 0; display: grid; }
+.cart-item-copy strong { font-size: 0.78rem; }
+.cart-item-copy span { overflow: hidden; color: var(--muted); font-size: 0.65rem; text-overflow: ellipsis; white-space: nowrap; }
+.remove-ticket { width: 28px; height: 28px; border: 0; border-radius: 8px; background: transparent; color: #7d879a; cursor: pointer; font-size: 1.1rem; }
+.remove-ticket:hover { background: rgba(255, 113, 139, 0.1); color: var(--danger); }
 .cart-total { display: flex; justify-content: space-between; align-items: center; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); }
 .cart-total strong { color: var(--text); font-family: "Space Grotesk", sans-serif; font-size: 1.25rem; }
 

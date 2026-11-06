@@ -7,6 +7,9 @@ const seatMessage = document.querySelector("#seat-message");
 const venueMap = document.querySelector("#venue-map");
 const mapToolbar = document.querySelector(".map-toolbar");
 const zoomLevel = document.querySelector("#zoom-level");
+const cartItems = document.querySelector("#cart-items");
+const cartCount = document.querySelector("#cart-count");
+const cartTotal = document.querySelector("#cart-total");
 
 const appState = {
   inspectedSeatId: null,
@@ -162,10 +165,75 @@ function changeMapView(action) {
   updateMapView();
 }
 
+function formatPrice(amount) {
+  return `${amount} ${venueData.currency}`;
+}
+
+function createCartItem(seat) {
+  const item = document.createElement("article");
+  item.className = "cart-item";
+  item.dataset.seatId = seat.id;
+  item.innerHTML = `
+    <div class="cart-seat-icon" aria-hidden="true">${seat.row}</div>
+    <div class="cart-item-copy">
+      <strong>Seat ${seat.id}</strong>
+      <span>${seat.sectionName} · ${formatPrice(seat.price)}</span>
+    </div>
+    <button type="button" class="remove-ticket" aria-label="Remove seat ${seat.id}" data-remove-seat="${seat.id}">×</button>
+  `;
+  return item;
+}
+
+function renderCart() {
+  cartItems.replaceChildren();
+
+  if (appState.cart.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "empty-cart";
+    empty.textContent = "Your cart is empty.";
+    cartItems.append(empty);
+  } else {
+    appState.cart.forEach((item) => {
+      const seat = getSeatById(item.id);
+      if (seat) cartItems.append(createCartItem(seat));
+    });
+  }
+
+  const total = appState.cart.reduce((sum, item) => sum + item.price, 0);
+  cartCount.textContent = appState.cart.length;
+  cartTotal.textContent = formatPrice(total);
+  updateSeatStates();
+  renderSeatInfo();
+}
+
+function addInspectedSeatToCart() {
+  const seat = getSeatById(appState.inspectedSeatId);
+  if (!seat || seat.unavailable) return;
+  if (appState.cart.some((item) => item.id === seat.id)) return;
+
+  appState.cart.push({ id: seat.id, price: seat.price });
+  seatMessage.textContent = `Seat ${seat.id} added to your cart.`;
+  renderCart();
+}
+
+function removeSeatFromCart(seatId) {
+  appState.cart = appState.cart.filter((item) => item.id !== seatId);
+  seatMessage.textContent = `Seat ${seatId} removed from your cart.`;
+  renderCart();
+}
+
 mapToolbar.addEventListener("click", (event) => {
   const control = event.target.closest("[data-action]");
   if (!control) return;
   changeMapView(control.dataset.action);
+});
+
+addToCartButton.addEventListener("click", addInspectedSeatToCart);
+
+cartItems.addEventListener("click", (event) => {
+  const removeButton = event.target.closest("[data-remove-seat]");
+  if (!removeButton) return;
+  removeSeatFromCart(removeButton.dataset.removeSeat);
 });
 
 seatLayout.addEventListener("click", (event) => {
