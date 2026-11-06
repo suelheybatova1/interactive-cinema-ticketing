@@ -165,7 +165,33 @@ h1, h2, .brand { font-family: "Space Grotesk", sans-serif; }
   background: linear-gradient(90deg, transparent, var(--cyan), var(--blue), transparent);
   box-shadow: 0 10px 34px rgba(93, 140, 255, 0.7);
 }
-.seat-layout { min-height: 390px; }
+.seat-layout { display: grid; gap: 24px; min-height: 390px; }
+.seat-section { display: grid; gap: 7px; }
+.section-heading { display: flex; align-items: center; justify-content: center; gap: 9px; margin-bottom: 2px; }
+.section-heading h3 { margin: 0; color: #7f899e; font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; }
+.section-heading span { color: #545d70; font-size: 0.62rem; }
+.seat-row { display: grid; grid-template-columns: 24px repeat(14, 34px) 24px; justify-content: center; gap: 7px; }
+.seat-section--vip .seat-row,
+.seat-section--economy .seat-row { grid-template-columns: 24px repeat(10, 34px) 24px; }
+.row-label { display: grid; place-items: center; color: #566074; font-size: 0.62rem; }
+.seat {
+  width: 34px;
+  height: 30px;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 8px 8px 5px 5px;
+  background: #252d3f;
+  color: #8d97aa;
+  font-size: 0.58rem;
+  cursor: pointer;
+  transition: transform 150ms ease, background 150ms ease, box-shadow 150ms ease, color 150ms ease;
+}
+.seat::after { content: ""; position: absolute; inset: auto 5px -3px; height: 4px; border-radius: 2px; background: inherit; opacity: 0.75; }
+.seat:hover:not(:disabled) { transform: translateY(-3px); background: #34405a; color: white; }
+.seat-section--vip .seat { border-color: rgba(166, 108, 255, 0.23); }
+.seat-section--premium .seat { border-color: rgba(93, 140, 255, 0.22); }
+.seat-section--economy .seat { background: #202737; }
+.seat.is-unavailable { opacity: 0.24; cursor: not-allowed; text-decoration: line-through; }
 
 .legend { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; padding: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.72rem; }
 .legend span { display: inline-flex; align-items: center; gap: 7px; }
