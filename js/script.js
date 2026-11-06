@@ -7,6 +7,7 @@ const seatMessage = document.querySelector("#seat-message");
 const venueMap = document.querySelector("#venue-map");
 const mapToolbar = document.querySelector(".map-toolbar");
 const zoomLevel = document.querySelector("#zoom-level");
+const mapStatus = document.querySelector("#map-status");
 const cartItems = document.querySelector("#cart-items");
 const cartCount = document.querySelector("#cart-count");
 const cartTotal = document.querySelector("#cart-total");
@@ -99,6 +100,9 @@ function updateSeatStates() {
     button.classList.toggle("is-in-cart", isInCart);
     button.setAttribute("aria-pressed", String(isInspected || isInCart));
   });
+
+  const remainingSeats = venueData.seats.filter((seat) => !seat.unavailable).length - appState.cart.length;
+  availableCount.textContent = remainingSeats;
 }
 
 function inspectSeat(seatId) {
@@ -106,6 +110,7 @@ function inspectSeat(seatId) {
   if (!seat || seat.unavailable) return;
 
   appState.inspectedSeatId = seatId;
+  seatMessage.textContent = "";
   updateSeatStates();
   renderSeatInfo();
 }
@@ -141,7 +146,6 @@ function renderSeatInfo() {
   `;
   addToCartButton.disabled = isInCart;
   addToCartButton.textContent = isInCart ? "Already in cart" : "Add to cart";
-  seatMessage.textContent = "";
 }
 
 function clamp(value, minimum, maximum) {
@@ -172,6 +176,16 @@ function changeMapView(action) {
   if (!actions[action]) return;
   actions[action]();
   updateMapView();
+  const actionNames = {
+    "zoom-in": "Zoomed in",
+    "zoom-out": "Zoomed out",
+    "move-up": "Map moved up",
+    "move-down": "Map moved down",
+    "move-left": "Map moved left",
+    "move-right": "Map moved right",
+    "reset-view": "Map centered"
+  };
+  mapStatus.textContent = `${actionNames[action]}. Zoom ${zoomLevel.value}.`;
 }
 
 function formatPrice(amount) {
@@ -216,7 +230,13 @@ function renderCart() {
 }
 
 function saveCart() {
-  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(appState.cart));
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(appState.cart));
+    return true;
+  } catch (error) {
+    seatMessage.textContent = "Your browser could not save the cart for refresh.";
+    return false;
+  }
 }
 
 function restoreCart() {
@@ -250,15 +270,15 @@ function addInspectedSeatToCart() {
   }
 
   appState.cart.push({ id: seat.id, price: seat.price });
-  saveCart();
   seatMessage.textContent = `Seat ${seat.id} added to your cart.`;
+  saveCart();
   renderCart();
 }
 
 function removeSeatFromCart(seatId) {
   appState.cart = appState.cart.filter((item) => item.id !== seatId);
-  saveCart();
   seatMessage.textContent = `Seat ${seatId} removed from your cart.`;
+  saveCart();
   renderCart();
 }
 
